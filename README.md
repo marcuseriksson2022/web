@@ -1,1 +1,1 @@
-Note that these files are only extracted files from project and NOT complete projects.
+Note that the typescript files are only extracted files from a project and NOT complete projects.
