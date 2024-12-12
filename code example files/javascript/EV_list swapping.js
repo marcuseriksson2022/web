@@ -93,10 +93,7 @@ update_value = function() {
 
 	count_sets = function() {
 		set++;
-		if (set >= maxSets && z==10) {
-			reset_sets();
-		}
-		else if (set >= 4 && z==20) {
+		if (set >= maxSets && z==10 || set >= 4 && z==20) {
 			reset_sets();
 		}
 		else {
