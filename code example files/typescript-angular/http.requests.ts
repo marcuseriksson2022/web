@@ -15,13 +15,9 @@ import * as fromSharedSelectors from '../../core/state/selectors';
 @Injectable()
 export class HttpRequests {
     token: string;
-    userToken: string;
     hostURL: string = 'http://localhost:3500/';
-    userExists: User;
-    users: User[];
     currentDepartment: Observable<string>;
     state$: Observable<AppState>;
-    users$: Observable<User[]>;
 
     constructor(private http: Http, private store: Store<AppState>) {
     }
