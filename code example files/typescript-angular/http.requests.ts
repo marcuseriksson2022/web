@@ -2,7 +2,6 @@ import { Injectable, Component, ViewChild } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 import { Product } from "../models/product";
 import { Order } from "../models/order";
-import { User } from "../models/user";
 import { Review } from "../models/review";
 import { State } from "../models/state";
 import { Http, Request, RequestMethod } from "@angular/http";
@@ -25,10 +24,6 @@ export class HttpRequests {
     users$: Observable<User[]>;
 
     constructor(private http: Http, private store: Store<AppState>) {
-        this.getUsers().subscribe(data => {
-            this.store.dispatch(fromSharedActions.setUsers({new_users: data}));
-            this.users = data;
-        });
     }
 
     authenticateLogin(user: string, pass: string): Observable<boolean> {
@@ -41,25 +36,6 @@ export class HttpRequests {
             this.token = r.success ? r.token : null;
             return r.success;
         });
-    }
-
-    authenticateUserLogin(user: string, pass: string): Observable<boolean> {
-        if (this.users != undefined) {
-            return this.http.request(new Request({
-                method: RequestMethod.Post,
-                url: this.hostURL + 'login',
-                body: { name: user, password: pass, users: this.users }
-            })).map(response => {
-                let r = response.json();
-                this.userExists = r.data;
-                this.userToken = r.success ? r.token : null;
-                return r.success;
-            });
-        }
-    }
-
-    getCurrentUser(): User {
-        return this.userExists;
     }
 
     getProducts(): Observable<Product[]> {
@@ -93,27 +69,7 @@ export class HttpRequests {
     deleteOrder(ordernumber: number): Observable<Order> {
         return this.makeRequest(RequestMethod.Delete, `http://localhost:3500/orders/${ordernumber}`, true);
     }
-
-    newUser(user: User): Observable<User> {
-        return this.makeRequest(RequestMethod.Post, `http://localhost:3500/users`, user);
-    }
-
-    getUsers(): Observable<User[]> {
-        return this.makeRequest(RequestMethod.Get, `http://localhost:3500/users`);
-    }
-
-    getUser(id: number): Observable<User[]> {
-        return this.makeRequest(RequestMethod.Get, `http://localhost:3500/users/${id}`);
-    }
-
-    putUser(user: User, id: number): Observable<User> {
-        return this.makeRequest(RequestMethod.Put, `http://localhost:3500/users/${id}`, user, true);
-    }
-
-    deleteUser(id: number): Observable<User> {
-        return this.makeRequest(RequestMethod.Delete, `http://localhost:3500/users/${id}`, true);
-    }
-
+    
     getReviews(): Observable<Review[]> {
         return this.makeRequest(RequestMethod.Get, `http://localhost:3500/reviews`);
     }
